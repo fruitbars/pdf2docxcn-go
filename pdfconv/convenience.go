@@ -41,11 +41,13 @@ func (c *Client) Convert(ctx context.Context, inputPath, outputDir, convType str
 		return "", fmt.Errorf("commit: %w", err)
 	}
 
+	ticker := time.NewTicker(5 * time.Second)
+	defer ticker.Stop()
 	for {
 		select {
 		case <-ctx.Done():
 			return "", ctx.Err()
-		case <-time.After(5 * time.Second):
+		case <-ticker.C:
 			status, err := c.GetStatus(ctx, uploadInfo.TaskID)
 			if err != nil {
 				return "", fmt.Errorf("status: %w", err)

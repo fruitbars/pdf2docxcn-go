@@ -78,12 +78,10 @@ func (c *Client) DownloadFile(ctx context.Context, downloadURL, outputPath strin
 	if err != nil {
 		return err
 	}
-	defer out.Close()
-
 	if _, err = io.Copy(out, resp.Body); err != nil {
 		out.Close()
 		os.Remove(outputPath)
 		return err
 	}
-	return nil
+	return out.Close()
 }

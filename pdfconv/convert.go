@@ -39,7 +39,7 @@ func (c *Client) CommitConversion(ctx context.Context, taskID string) error {
 // GetStatus returns the current status of a conversion task.
 func (c *Client) GetStatus(ctx context.Context, taskID string) (*Status, error) {
 	const path = "/openapi/v2/status"
-	query := "taskID=" + taskID
+	query := "taskID=" + url.QueryEscape(taskID)
 
 	headers := c.authHeaders("GET", path, query, "0")
 	req, err := http.NewRequestWithContext(ctx, "GET", c.host+path+"?"+query, nil)

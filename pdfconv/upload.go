@@ -15,11 +15,14 @@ import (
 func (c *Client) RequestUpload(ctx context.Context, filename, convType string, size int64) (*UploadInfo, error) {
 	const path = "/openapi/v2/upload"
 
-	body, _ := json.Marshal(map[string]interface{}{
+	body, err := json.Marshal(map[string]interface{}{
 		"filename": filename,
 		"type":     convType,
 		"size":     size,
 	})
+	if err != nil {
+		return nil, err
+	}
 	bodyLen := strconv.Itoa(len(body))
 
 	headers := c.authHeaders("POST", path, "", bodyLen)

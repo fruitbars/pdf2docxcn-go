@@ -32,7 +32,10 @@ func main() {
 	fmt.Println("=== Example 2: Step-by-Step Conversion ===")
 
 	// Step 1: Request upload
-	stat, _ := os.Stat("input.pdf")
+	stat, err := os.Stat("input.pdf")
+	if err != nil {
+		log.Fatalf("Stat failed: %v", err)
+	}
 	uploadInfo, err := client.RequestUpload(ctx, "example.pdf", "pdf2word", stat.Size())
 	if err != nil {
 		log.Fatalf("Request upload failed: %v", err)
